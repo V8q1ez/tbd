@@ -5,31 +5,31 @@ BOOLEAN_E SHM_AreMovingParametersValid( unsigned short speed,
                                         unsigned short rpm,
                                         unsigned char isHandbrakeActive )
 {
-    BOOLEAN_E result = TRUE;
+    BOOLEAN_E result = VALID;
 
     if (speed > 180 )
     {
-        result = FALSE;
+        result = INVALID;
     }
     if ((gear < -1) || (gear > 5))
     {
-        result = FALSE;
+        result = INVALID;
     }
     if (rpm > 6000)
     {
-        result = FALSE;
+        result = INVALID;
     }
     if (isHandbrakeActive > 1)
     {
-        result = FALSE;
+        result = INVALID;
     }
     if ((gear < -1) && (speed > 20))
     {
-        result = FALSE;
+        result = INVALID;
     }
     if ((gear != 0) && (isHandbrakeActive == 1) && (speed > 0))
     {
-        result = FALSE;
+        result = INVALID;
     }
 
 	return result;

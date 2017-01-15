@@ -3,8 +3,8 @@
 
 typedef enum
 {
-    FALSE = 0,
-    TRUE = 1,
+    INVALID = 0,
+    VALID = 1,
 
 }BOOLEAN_E;
 
