@@ -32,5 +32,5 @@ BOOLEAN_E SHM_AreMovingParametersValid( unsigned short speed,
         result = INVALID;
     }
 
-	return result;
+    return result;
 }
