@@ -23,7 +23,7 @@ BOOLEAN_E SHM_AreMovingParametersValid( unsigned short speed,
     {
         result = INVALID;
     }
-    if ((gear < -1) && (speed > 20))
+    if ((gear == -1) && (speed > 20))
     {
         result = INVALID;
     }

@@ -64,7 +64,7 @@ void test_SHM_AreMovingParametersValid_004( void )
 void test_SHM_AreMovingParametersValid_005( void )
 {
     BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(30, -1, 2000, 0);
+    actual = SHM_AreMovingParametersValid(10, -1, 2000, 0);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
 /**
@@ -141,7 +141,7 @@ void test_SHM_AreMovingParametersValid_011( void )
 void test_SHM_AreMovingParametersValid_012( void )
 {
     BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 2, 2000, 1);
+    actual = SHM_AreMovingParametersValid(100, 0, 2000, 1);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
 /**
