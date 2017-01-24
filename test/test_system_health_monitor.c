@@ -49,6 +49,19 @@ void test_MovingParameters_MaximumValues_NoSpeed( void )
 }
 /**
  * Given all parameters equal to minimal valid values
+ * But vehicle speed is equal to -1
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_VehicleSpeed_OutOfMin( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(-1, -1, 0, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
  * But vehicle speed is equal to 181
  * When SHM_AreMovingParametersValid() is called
  * Then it shall return INVALID
@@ -58,6 +71,19 @@ void test_MovingParameters_VehicleSpeed_OutOfMax( void )
     BOOLEAN_E actual = INVALID;
 
     actual = SHM_AreMovingParametersValid(181, -1, 0, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
+ * But selected gear is equal to -2
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_Gear_OutOfMin( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(0, -2, 0, 0);
     TEST_ASSERT_EQUAL_INT (INVALID, actual);
 }
 /**
@@ -75,6 +101,19 @@ void test_MovingParameters_Gear_OutOfMax( void )
 }
 /**
  * Given all parameters equal to minimal valid values
+ * But engine speed is equal to -1
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_Rpm_OutOfMin( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(0, -1, -1, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
  * But engine speed is equal to 6001
  * When SHM_AreMovingParametersValid() is called
  * Then it shall return INVALID
@@ -84,6 +123,19 @@ void test_MovingParameters_Rpm_OutOfMax( void )
     BOOLEAN_E actual = INVALID;
 
     actual = SHM_AreMovingParametersValid(0, -1, 6001, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
+ * But handbrake state becomes equal to -1
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_Handbrake_OutOfMin( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(0, -1, 0, -1);
     TEST_ASSERT_EQUAL_INT (INVALID, actual);
 }
 /**
