@@ -10,185 +10,132 @@ void tearDown(void) {
 }
 
 /**
- * Given all parameters are in range
- * When vehicle speed becomes equal to 0
- * Then SHM_AreMovingParametersValid() shall return VALID
+ * Given all parameters equal to minimal valid values
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return VALID
  */
-void test_SHM_AreMovingParametersValid_001( void )
+void test_MovingParameters_MinimalValues( void )
 {
     BOOLEAN_E actual = INVALID;
 
-    actual = SHM_AreMovingParametersValid(0, 1, 2000, 0);
+    actual = SHM_AreMovingParametersValid(0, -1, 0, 0);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
 /**
- * Given all parameters are in range
- * When vehicle speed becomes equal to 180
- * Then SHM_AreMovingParametersValid() shall return VALID
+ * Given all parameters equal to maximum valid values
+ * But handbrake is not activated
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return VALID
  */
-void test_SHM_AreMovingParametersValid_002( void )
+void test_MovingParameters_MaximumValues_NoHandBrake( void )
 {
     BOOLEAN_E actual = INVALID;
 
-    actual = SHM_AreMovingParametersValid(180, 1, 2000, 0);
+    actual = SHM_AreMovingParametersValid(180, 5, 6000, 0);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
 /**
- * Given all parameters are in range
- * When vehicle speed becomes equal to 181
- * Then SHM_AreMovingParametersValid() shall return INVALID
+ * Given all parameters equal to maximum valid values
+ * But vehicle speed is equal to 0
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return VALID
  */
-void test_SHM_AreMovingParametersValid_003( void )
+void test_MovingParameters_MaximumValues_NoSpeed( void )
 {
     BOOLEAN_E actual = INVALID;
 
-    actual = SHM_AreMovingParametersValid(181, 1, 2000, 0);
-    TEST_ASSERT_EQUAL_INT (INVALID, actual);
-}
-/**
- * Given all parameters are in range
- * When selected gear becomes equal to -2
- * Then SHM_AreMovingParametersValid() shall return INVALID
- */
-void test_SHM_AreMovingParametersValid_004( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(30, -2, 2000, 0);
-    TEST_ASSERT_EQUAL_INT (INVALID, actual);
-}
-/**
- * Given all parameters are in range
- * When selected gear becomes equal to -1
- * Then SHM_AreMovingParametersValid() shall return VALID
- */
-void test_SHM_AreMovingParametersValid_005( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(10, -1, 2000, 0);
+    actual = SHM_AreMovingParametersValid(0, 5, 6000, 1);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
 /**
- * Given all parameters are in range
- * When selected gear becomes equal to 5
- * Then SHM_AreMovingParametersValid() shall return VALID
+ * Given all parameters equal to minimal valid values
+ * But vehicle speed is equal to 181
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
  */
-void test_SHM_AreMovingParametersValid_006( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(30, 5, 2000, 0);
-    TEST_ASSERT_EQUAL_INT (VALID, actual);
-}
-/**
- * Given all parameters are in range
- * When selected gear becomes equal to 6
- * Then SHM_AreMovingParametersValid() shall return INVALID
- */
-void test_SHM_AreMovingParametersValid_007( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(30, 6, 2000, 0);
-    TEST_ASSERT_EQUAL_INT (INVALID, actual);
-}
-/**
- * Given all parameters are in range
- * When engine speed becomes equal to 0
- * Then SHM_AreMovingParametersValid() shall return VALID
- */
-void test_SHM_AreMovingParametersValid_008( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 1, 0, 0);
-    TEST_ASSERT_EQUAL_INT (VALID, actual);
-}
-/**
- * Given all parameters are in range
- * When engine speed becomes equal to 6000
- * Then SHM_AreMovingParametersValid() shall return VALID
- */
-void test_SHM_AreMovingParametersValid_009( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 1, 6000, 0);
-    TEST_ASSERT_EQUAL_INT (VALID, actual);
-}
-/**
- * Given all parameters are in range
- * When engine speed becomes equal to 6001
- * Then SHM_AreMovingParametersValid() shall return INVALID
- */
-void test_SHM_AreMovingParametersValid_010( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 1, 6001, 0);
-    TEST_ASSERT_EQUAL_INT (INVALID, actual);
-}
-/**
- * Given all parameters are in range
- * When handbrake becomes not activated
- * Then SHM_AreMovingParametersValid() shall return VALID
- */
-void test_SHM_AreMovingParametersValid_011( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 1, 2000, 0);
-    TEST_ASSERT_EQUAL_INT (VALID, actual);
-}
-/**
- * Given all parameters are in range
- * When handbrake becomes activated
- * Then SHM_AreMovingParametersValid() shall return VALID
- */
-void test_SHM_AreMovingParametersValid_012( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 0, 2000, 1);
-    TEST_ASSERT_EQUAL_INT (VALID, actual);
-}
-/**
- * Given all parameters are in range
- * When handbrake state becomes equal to 2
- * Then SHM_AreMovingParametersValid() shall return INVALID
- */
-void test_SHM_AreMovingParametersValid_013( void )
-{
-    BOOLEAN_E actual = INVALID;
-    actual = SHM_AreMovingParametersValid(100, 2, 2000, 2);
-    TEST_ASSERT_EQUAL_INT (INVALID, actual);
-}
-/**
- * Given all parameters are in range
- * When Reverse Gear becomes selected
- * And vehicle speed becomes equal to 21
- * Then SHM_AreMovingParametersValid() shall return INVALID
- */
-void test_SHM_AreMovingParametersValid_014( void )
+void test_MovingParameters_VehicleSpeed_OutOfMax( void )
 {
     BOOLEAN_E actual = INVALID;
 
-    actual = SHM_AreMovingParametersValid(21, -1, 1000, 0);
+    actual = SHM_AreMovingParametersValid(181, -1, 0, 0);
     TEST_ASSERT_EQUAL_INT (INVALID, actual);
 }
 /**
- * Given all parameters are in range
- * When Reverse Gear becomes selected
- * And vehicle speed becomes equal to 20
- * Then SHM_AreMovingParametersValid() shall return VALID
+ * Given all parameters equal to minimal valid values
+ * But selected gear is equal to 6
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
  */
-void test_SHM_AreMovingParametersValid_015( void )
+void test_MovingParameters_Gear_OutOfMax( void )
 {
     BOOLEAN_E actual = INVALID;
 
-    actual = SHM_AreMovingParametersValid(20, -1, 1000, 0);
+    actual = SHM_AreMovingParametersValid(0, 6, 0, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
+ * But engine speed is equal to 6001
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_Rpm_OutOfMax( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(0, -1, 6001, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
+ * But handbrake state becomes equal to 2
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_Handbrake_OutOfMax( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(0, -1, 0, 2);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
+ * And Reverse Gear becomes selected
+ * But vehicle speed becomes equal to 21
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
+ */
+void test_MovingParameters_Gead_Speed_Inconsistent( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(21, -1, 0, 0);
+    TEST_ASSERT_EQUAL_INT (INVALID, actual);
+}
+/**
+ * Given all parameters equal to minimal valid values
+ * And Reverse Gear becomes selected
+ * But vehicle speed becomes equal to 20
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return VALID
+ */
+void test_MovingParameters_Gead_Speed_Consistent( void )
+{
+    BOOLEAN_E actual = INVALID;
+
+    actual = SHM_AreMovingParametersValid(20, -1, 0, 0);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
 /**
- * Given all parameters are in range
+ * Given all parameters equal to minimal valid values
  * And selected gear is equal to 1
  * But handbrake is activated
- * When vehicle speed becomes equal to 1
- * Then SHM_AreMovingParametersValid() shall return INVALID
+ * And vehicle speed is equal to 1
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return INVALID
  */
-void test_SHM_AreMovingParametersValid_016( void )
+void test_MovingParameters_Gead_Speed_Handbrake_Inconsistent( void )
 {
     BOOLEAN_E actual = INVALID;
 
@@ -196,13 +143,14 @@ void test_SHM_AreMovingParametersValid_016( void )
     TEST_ASSERT_EQUAL_INT (INVALID, actual);
 }
 /**
- * Given all parameters are in range
+ * Given all parameters equal to minimal valid values
  * And selected gear is equal to 1
  * But handbrake is activated
- * When vehicle speed becomes equal to 0
- * Then SHM_AreMovingParametersValid() shall return VALID
+ * And vehicle speed is equal to 0
+ * When SHM_AreMovingParametersValid() is called
+ * Then it shall return VALID
  */
-void test_SHM_AreMovingParametersValid_017( void )
+void test_MovingParameters_Gead_Speed_Handbrake_Consistent( void )
 {
     BOOLEAN_E actual = INVALID;
 
