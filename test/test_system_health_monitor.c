@@ -196,8 +196,8 @@ void test_MovingParameters_Gead_Speed_Handbrake_Inconsistent( void )
 }
 /**
  * Given all parameters equal to minimal valid values
- * And selected gear is equal to 1
- * But handbrake is activated
+ * And selected gear is equal to 0
+ * But handbrake is not activated
  * And vehicle speed is equal to 0
  * When SHM_AreMovingParametersValid() is called
  * Then it shall return VALID
@@ -206,6 +206,6 @@ void test_MovingParameters_Gead_Speed_Handbrake_Consistent( void )
 {
     BOOLEAN_E actual = INVALID;
 
-    actual = SHM_AreMovingParametersValid(0, 1, 1000, 1);
+    actual = SHM_AreMovingParametersValid(0, 0, 1000, 0);
     TEST_ASSERT_EQUAL_INT (VALID, actual);
 }
