@@ -23,14 +23,5 @@ BOOLEAN_E SHM_AreMovingParametersValid( unsigned short speed,
     {
         result = INVALID;
     }
-    if ((gear < -1) && (speed > 20))
-    {
-        result = INVALID;
-    }
-    if ((gear != 0) && (isHandbrakeActive == 1) && (speed > 0))
-    {
-        result = INVALID;
-    }
-
     return result;
 }
