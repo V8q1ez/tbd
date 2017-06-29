@@ -1,5 +1,5 @@
-#ifndef TRAFFIC_LIGHT_FSM
-#define TRAFFIC_LIGHT_FSM
+#ifndef TRAFFIC_LIGHT_FSM_H
+#define TRAFFIC_LIGHT_FSM_H
 
 
 /**
@@ -22,4 +22,4 @@ void TLFSM_SwitchToNextPhase( void );
 void TLFSM_SwitchToDefaultPhase( void );
 
 
-#endif /* TRAFFIC_LIGHT_FSM */
+#endif /* TRAFFIC_LIGHT_FSM_H */
