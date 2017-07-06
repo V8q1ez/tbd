@@ -52,6 +52,13 @@ void LDRV_EwweRedLampFlashing( void );
  */
 void LDRV_EwweDontWalkLampOn( void );
 
+/**
+ * \brief Switches on the "WALK" lamp at the EW-WE direction.
+ *
+ * "DIN'T WALK" lamp is switched off by this function.
+ * Vehicle traffic light state is not changed.
+ */
+void LDRV_EwweWalkLampOn( void );
 
 /**
  * \brief Switches on the "DON'T WALK" lamp flashing mode at the EW-WE direction.
@@ -106,6 +113,13 @@ void LDRV_NssnRedLampFlashing( void );
  */
 void LDRV_NssnDontWalkLampOn( void );
 
+/**
+ * \brief Switches on the "WALK" lamp at the NS-SN direction.
+ *
+ * "DIN'T WALK" lamp is switched off by this function.
+ * Vehicle traffic light state is not changed.
+ */
+void LDRV_NssnWalkLampOn( void );
 
 /**
  * \brief Switches on the "DON'T WALK" lamp flashing mode at the NS-SN direction.
