@@ -121,6 +121,10 @@ void TLFSM_SwitchToNextPhase( void )
             LDRV_NssnRedLampOn();
             break;
         }
+        default:
+        {
+            break;
+        }
     }
 }
 
