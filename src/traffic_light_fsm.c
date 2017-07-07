@@ -82,14 +82,15 @@ void TLFSM_SwitchToNextPhase( void )
         }
         case TLFSM_PHASE_4_8:
         {
-            gTlfsmData.activePhase = TLFSM_PHASE_5;
             if (gTlfsmData.previousPhase == TLFSM_PHASE_3)
             {
+                gTlfsmData.activePhase = TLFSM_PHASE_5;
                 LDRV_NssnGreenLampOn();
                 LDRV_NssnWalkLampOn();
             }
             else
             {
+                gTlfsmData.activePhase = TLFSM_PHASE_1;
                 LDRV_EwweGreenLampOn();
                 LDRV_EwweWalkLampOn();
             }
