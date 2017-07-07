@@ -119,7 +119,16 @@ void setUp(void) {
 void tearDown(void) {
     // clean stuff up here
 }
-
+/**
+ * Given Traffic Light FSM is not initialized
+ * When TLFSM_Init() is called
+ * Then activePhase shall be equal to TLFSM_DEFAULT_PHASE
+ * And previousPhase shall be equal to TLFSM_DEFAULT_PHASE
+ * And LDRV_EwweRedLampFlashing() shall be called
+ * And LDRV_NssnRedLampFlashing() shall be called
+ * And LDRV_EwweDontWalkLampOn() shall be called
+ * And LDRV_NssnDontWalkLampOn() shall be called
+ */
 void test_Initialization(void)
 {
     // arrange
@@ -138,6 +147,16 @@ void test_Initialization(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvNssnDontWalkLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_DEFAULT_PHASE
+ * And previousPhase is equal to TLFSM_DEFAULT_PHASE
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_1
+ * And previousPhase shall be equal to TLFSM_DEFAULT_PHASE
+ * And LDRV_EwweGreenLampOn() shall be called
+ * And LDRV_EwweWalkLampOn() shall be called
+ */
 void test_Phase1(void)
 {
     // arrange
@@ -156,6 +175,15 @@ void test_Phase1(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvEwweWalkLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_1
+ * And previousPhase is equal to TLFSM_DEFAULT_PHASE
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_2
+ * And previousPhase shall be equal to TLFSM_PHASE_1
+ * And LDRV_EwweDontWalkLampFlashing() shall be called
+ */
 void test_Phase2(void)
 {
     // arrange
@@ -172,6 +200,16 @@ void test_Phase2(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvEwweDontWalkLampFlashingCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_2
+ * And previousPhase is equal to TLFSM_PHASE_1
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_3
+ * And previousPhase shall be equal to TLFSM_PHASE_2
+ * And LDRV_EwweYellowLampOn() shall be called
+ * And LDRV_EwweDontWalkLampOn() shall be called
+ */
 void test_Phase3(void)
 {
     // arrange
@@ -189,6 +227,15 @@ void test_Phase3(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvEwweDontWalkLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_3
+ * And previousPhase is equal to TLFSM_PHASE_2
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_4_8
+ * And previousPhase shall be equal to TLFSM_PHASE_3
+ * And LDRV_EwweRedLampOn() shall be called
+ */
 void test_Phase4(void)
 {
     // arrange
@@ -205,6 +252,16 @@ void test_Phase4(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvEwweRedLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_4_8
+ * And previousPhase is equal to TLFSM_PHASE_3
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_5
+ * And previousPhase shall be equal to TLFSM_PHASE_4_8
+ * And LDRV_NssnGreenLampOn() shall be called
+ * And LDRV_NssnWalkLampOn() shall be called
+ */
 void test_Phase5(void)
 {
     // arrange
@@ -222,6 +279,15 @@ void test_Phase5(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvNssnWalkLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_5
+ * And previousPhase is equal to TLFSM_PHASE_4_8
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_6
+ * And previousPhase shall be equal to TLFSM_PHASE_5
+ * And LDRV_NssnDontWalkLampFlashing() shall be called
+ */
 void test_Phase6(void)
 {
     // arrange
@@ -238,6 +304,15 @@ void test_Phase6(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvNssnDontWalkLampFlashingCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_6
+ * And previousPhase is equal to TLFSM_PHASE_5
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_7
+ * And previousPhase shall be equal to TLFSM_PHASE_6
+ * And LDRV_NssnNssnYellowLampOn() shall be called
+ */
 void test_Phase7(void)
 {
     // arrange
@@ -254,6 +329,15 @@ void test_Phase7(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvNssnYellowLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_7
+ * And previousPhase is equal to TLFSM_PHASE_6
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_4_8
+ * And previousPhase shall be equal to TLFSM_PHASE_7
+ * And LDRV_NssnNssnYellowLampOn() shall be called
+ */
 void test_Phase8(void)
 {
     // arrange
@@ -270,6 +354,16 @@ void test_Phase8(void)
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvNssnRedLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_4_8
+ * And previousPhase is equal to TLFSM_PHASE_7
+ * When TLFSM_SwitchToNextPhase() is called
+ * Then activePhase shall be equal to TLFSM_PHASE_1
+ * And previousPhase shall be equal to TLFSM_PHASE_4_8
+ * And LDRV_EwweGreenLampOn() shall be called
+ * And LDRV_EwweWalkLampOn() shall be called
+ */
 void test_Phase8_Phase1(void)
 {
     // arrange
@@ -284,13 +378,26 @@ void test_Phase8_Phase1(void)
     TEST_ASSERT_EQUAL_INT(TLFSM_PHASE_4_8, gTlfsmData.previousPhase);
 
     TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvEwweGreenLampOnCalls);
+    TEST_ASSERT_EQUAL_INT(1, gTestData.ldrvEwweWalkLampOnCalls);
 }
 
+/**
+ * Given Traffic Light FSM is initialized
+ * And activePhase is equal to TLFSM_PHASE_1
+ * And previousPhase is equal to TLFSM_PHASE_4_8
+ * When TLFSM_SwitchToDefaultPhase() is called
+ * Then activePhase shall be equal to TLFSM_DEFAULT_PHASE
+ * And previousPhase shall be equal to TLFSM_DEFAULT_PHASE
+ * And LDRV_EwweRedLampFlashing() shall be called
+ * And LDRV_NssnRedLampFlashing() shall be called
+ * And LDRV_EwweDontWalkLampOn() shall be called
+ * And LDRV_NssnDontWalkLampOn() shall be called
+ */
 void test_Phase1_Default(void)
 {
     // arrange
-    //gTlfsmData.activePhase = TLFSM_PHASE_4_8;
-    //gTlfsmData.previousPhase = TLFSM_PHASE_7;
+    //gTlfsmData.activePhase = TLFSM_PHASE_1;
+    //gTlfsmData.previousPhase = TLFSM_PHASE_4_8;
 
     // act
     TLFSM_SwitchToDefaultPhase();
