@@ -2,142 +2,139 @@
 #include "lamp_driver.h"
 #include "string.h"
 
-typedef enum TLFSM_PHASE
-{
-    TLFSM_DEFAULT_PHASE,
-    TLFSM_PHASE_1,
-    TLFSM_PHASE_2,
-    TLFSM_PHASE_3,
-    TLFSM_PHASE_4_8,
-    TLFSM_PHASE_5,
-    TLFSM_PHASE_6,
-    TLFSM_PHASE_7
 
-}TLFSM_PHASE_E;
+typedef void (*TLFSM_ENTER_STATE_FP)(void);
 
+#define TLFSM_NUMBER_OF_STATES (9)
 
 typedef struct TLFSM_DATA
 {
-    TLFSM_PHASE_E activePhase;
-    TLFSM_PHASE_E previousPhase;
+    const TLFSM_ENTER_STATE_FP  states[ TLFSM_NUMBER_OF_STATES ];
+    int                         activeState;
+    int                         isTransitionFromDefault;
 
 }TLFSM_DATA_S;
 
 
-static TLFSM_DATA_S gTlfsmData;
+static void tlfsm_DefaultStateEnter(void);
+static void tlfsm_Phase1StateEnter(void);
+static void tlfsm_Phase2StateEnter(void);
+static void tlfsm_Phase3StateEnter(void);
+static void tlfsm_Phase4StateEnter(void);
+static void tlfsm_Phase5StateEnter(void);
+static void tlfsm_Phase6StateEnter(void);
+static void tlfsm_Phase7StateEnter(void);
+static void tlfsm_Phase8StateEnter(void);
+
+
+static TLFSM_DATA_S gTlfsmData = {
+        .states =
+        {
+                tlfsm_DefaultStateEnter,
+                tlfsm_Phase1StateEnter,
+                tlfsm_Phase2StateEnter,
+                tlfsm_Phase3StateEnter,
+                tlfsm_Phase4StateEnter,
+                tlfsm_Phase5StateEnter,
+                tlfsm_Phase6StateEnter,
+                tlfsm_Phase7StateEnter,
+                tlfsm_Phase8StateEnter
+        }
+};
 
 
 void TLFSM_Init( void )
 {
-    memset(&gTlfsmData, 0, sizeof(gTlfsmData));
+    gTlfsmData.activeState = 0;
+    gTlfsmData.isTransitionFromDefault = 0;
 
     LDRV_Init();
 
-    LDRV_EwweRedLampFlashing();
-    LDRV_NssnRedLampFlashing();
-
-    LDRV_EwweDontWalkLampOn();
-    LDRV_NssnDontWalkLampOn();
+    TLFSM_SwitchToDefaultPhase();
 }
-
 
 void TLFSM_SwitchToNextPhase( void )
 {
-    switch(gTlfsmData.activePhase)
+    TLFSM_ENTER_STATE_FP stateFp = NULL;
+
+    gTlfsmData.activeState++;
+
+    if (TLFSM_NUMBER_OF_STATES == gTlfsmData.activeState)
     {
-        case TLFSM_DEFAULT_PHASE:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_1;
-            gTlfsmData.previousPhase = TLFSM_DEFAULT_PHASE;
-
-            LDRV_EwweGreenLampOn();
-            LDRV_NssnRedLampOn();
-            LDRV_EwweWalkLampOn();
-            break;
-        }
-        case TLFSM_PHASE_1:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_2;
-            gTlfsmData.previousPhase = TLFSM_PHASE_1;
-
-            LDRV_EwweDontWalkLampFlashing();
-            break;
-        }
-        case TLFSM_PHASE_2:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_3;
-            gTlfsmData.previousPhase = TLFSM_PHASE_2;
-
-            LDRV_EwweYellowLampOn();
-            LDRV_EwweDontWalkLampOn();
-            break;
-        }
-        case TLFSM_PHASE_3:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_4_8;
-            gTlfsmData.previousPhase = TLFSM_PHASE_3;
-
-            LDRV_EwweRedLampOn();
-            break;
-        }
-        case TLFSM_PHASE_4_8:
-        {
-            if (gTlfsmData.previousPhase == TLFSM_PHASE_3)
-            {
-                gTlfsmData.activePhase = TLFSM_PHASE_5;
-                LDRV_NssnGreenLampOn();
-                LDRV_NssnWalkLampOn();
-            }
-            else
-            {
-                gTlfsmData.activePhase = TLFSM_PHASE_1;
-                LDRV_EwweGreenLampOn();
-                LDRV_EwweWalkLampOn();
-            }
-            gTlfsmData.previousPhase = TLFSM_PHASE_4_8;
-            break;
-        }
-        case TLFSM_PHASE_5:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_6;
-            gTlfsmData.previousPhase = TLFSM_PHASE_5;
-
-            LDRV_NssnDontWalkLampFlashing();
-            break;
-        }
-        case TLFSM_PHASE_6:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_7;
-            gTlfsmData.previousPhase = TLFSM_PHASE_6;
-
-            LDRV_NssnYellowLampOn();
-            LDRV_NssnDontWalkLampOn();
-            break;
-        }
-        case TLFSM_PHASE_7:
-        {
-            gTlfsmData.activePhase = TLFSM_PHASE_4_8;
-            gTlfsmData.previousPhase = TLFSM_PHASE_7;
-
-            LDRV_NssnRedLampOn();
-            break;
-        }
-        default:
-        {
-            break;
-        }
+        gTlfsmData.activeState = 1;
     }
-}
 
+    stateFp = gTlfsmData.states[ gTlfsmData.activeState ];
+
+    stateFp();
+}
 
 void TLFSM_SwitchToDefaultPhase( void )
 {
-    gTlfsmData.activePhase = TLFSM_DEFAULT_PHASE;
-    gTlfsmData.previousPhase = TLFSM_DEFAULT_PHASE;
+    TLFSM_ENTER_STATE_FP stateFp = NULL;
 
+    gTlfsmData.activeState = 0;
+    gTlfsmData.isTransitionFromDefault = 1;
+
+    stateFp = gTlfsmData.states[ gTlfsmData.activeState ];
+
+    stateFp();
+}
+
+static void tlfsm_DefaultStateEnter(void)
+{
     LDRV_EwweRedLampFlashing();
     LDRV_NssnRedLampFlashing();
 
     LDRV_EwweDontWalkLampOn();
     LDRV_NssnDontWalkLampOn();
+}
+
+static void tlfsm_Phase1StateEnter(void)
+{
+    LDRV_EwweGreenLampOn();
+    if (1 == gTlfsmData.isTransitionFromDefault)
+    {
+        LDRV_NssnRedLampOn();
+        gTlfsmData.isTransitionFromDefault = 0;
+    }
+    LDRV_EwweWalkLampOn();
+}
+
+static void tlfsm_Phase2StateEnter(void)
+{
+    LDRV_EwweDontWalkLampFlashing();
+}
+
+static void tlfsm_Phase3StateEnter(void)
+{
+    LDRV_EwweYellowLampOn();
+    LDRV_EwweDontWalkLampOn();
+}
+
+static void tlfsm_Phase4StateEnter(void)
+{
+    LDRV_EwweRedLampOn();
+}
+
+static void tlfsm_Phase5StateEnter(void)
+{
+    LDRV_NssnGreenLampOn();
+    LDRV_NssnWalkLampOn();
+}
+
+static void tlfsm_Phase6StateEnter(void)
+{
+    LDRV_NssnDontWalkLampFlashing();
+}
+
+static void tlfsm_Phase7StateEnter(void)
+{
+    LDRV_NssnYellowLampOn();
+    LDRV_NssnDontWalkLampOn();
+}
+
+static void tlfsm_Phase8StateEnter(void)
+{
+    LDRV_NssnRedLampOn();
 }
