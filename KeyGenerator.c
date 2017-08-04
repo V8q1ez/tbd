@@ -1,11 +1,9 @@
 #include "KeyGenerator.h"
-
-#include "semphr.h"
+#include "kg_osal.h"
 
 
 typedef struct KG_DATA
 {
-	QueueHandle_t mutex;
 	unsigned int lastGeneratedkey;
 
 }KG_DATA_S;
@@ -14,34 +12,30 @@ typedef struct KG_DATA
 static KG_DATA_S gKgData;
 
 
-BaseType_t KG_Init(void)
+OSAL_RESULT_E KG_Init(void)
 {
-	BaseType_t status = pdFALSE;
+	OSAL_RESULT_E status = OSAL_FAIL;
 
 	gKgData.lastGeneratedkey = 0;
 
-	gKgData.mutex = xSemaphoreCreateMutex();
+	status = KG_OsalCreateMutex();
 
-	if (gKgData.mutex != NULL)
-	{
-		status = pdTRUE;
-	}
 	return status;
 }
 
-BaseType_t KG_GenerateKey(uint32_t * pKey)
+OSAL_RESULT_E KG_GenerateKey(uint32_t * pKey)
 {
-	BaseType_t status = pdFALSE;
+	OSAL_RESULT_E status = OSAL_FAIL;
 
-	status = xSemaphoreTake(gKgData.mutex, (TickType_t)10);
+	status = KG_OsalGetMutex();
 
-	if (status == pdTRUE)
+	if (status == OSAL_OK)
 	{
 		gKgData.lastGeneratedkey += 1;
 
 		*pKey = gKgData.lastGeneratedkey;
 
-		status = xSemaphoreGive(gKgData.mutex);
+		status = KG_OsalPutMutex();
 	}
 
 	return status;

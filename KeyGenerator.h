@@ -1,11 +1,11 @@
 #ifndef KEY_GENERATOR_H
 #define KEY_GENERATOR_H
 
-#include "FreeRTOS.h"
+#include "osal_types.h"
 
-BaseType_t KG_Init(void);
+OSAL_RESULT_E KG_Init(void);
 
-BaseType_t KG_GenerateKey(uint32_t * pKey);
+OSAL_RESULT_E KG_GenerateKey(uint32_t * pKey);
 
 #endif // KEY_GENERATOR_H
 
