@@ -1,9 +1,10 @@
 #include "KeyGenerator.h"
-#include "kg_osal.h"
+#include "osal.h"
 
 
 typedef struct KG_DATA
 {
+	OSAL_MUTEX	mutex;
 	unsigned int lastGeneratedkey;
 
 }KG_DATA_S;
@@ -18,7 +19,7 @@ OSAL_RESULT_E KG_Init(void)
 
 	gKgData.lastGeneratedkey = 0;
 
-	status = KG_OsalCreateMutex();
+	status = Osal_CreateMutex(&gKgData.mutex);
 
 	return status;
 }
@@ -27,7 +28,7 @@ OSAL_RESULT_E KG_GenerateKey(uint32_t * pKey)
 {
 	OSAL_RESULT_E status = OSAL_FAIL;
 
-	status = KG_OsalGetMutex();
+	status = Osal_GetMutex(gKgData.mutex, 10);
 
 	if (status == OSAL_OK)
 	{
@@ -35,7 +36,7 @@ OSAL_RESULT_E KG_GenerateKey(uint32_t * pKey)
 
 		*pKey = gKgData.lastGeneratedkey;
 
-		status = KG_OsalPutMutex();
+		status = Osal_PutMutex(gKgData.mutex);
 	}
 
 	return status;
